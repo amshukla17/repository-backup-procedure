@@ -20,7 +20,6 @@ There is no loss with backing up git repositories. No one cannot be so sure that
 
 ---
 
-TODO
 ## Procedure
 The procedure is pretty simple.
 - There is a repositories.csv file. You have to list your repositories now and maintain list onwards to take backup of those repositories.
