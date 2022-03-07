@@ -73,8 +73,7 @@ def main():
         cloneCount = fetchCount = failCount = 0
 
         for row in csvReader:
-            #try:
-            if 1:
+            try:
                 operation = cloneOrFetchNow(PATH_TO_CLONE, row['URL'])
                 if operation == 'error':
                     failCount += 1
@@ -86,9 +85,9 @@ def main():
                     print(
                         "Check repository " + row['URL'] +
                         "for operation " + operation + ".")
-            #except Exception as e:
-            #    print(e)
-            #    failCount += 1
+            except Exception as e:
+                print(e)
+                failCount += 1
 
         print(f'Processed clone for #{cloneCount} repositories.')
         print(f'Processed fetch for #{fetchCount} repositories.')
