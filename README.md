@@ -61,6 +61,7 @@ i.e. This procedure is setup in my home folder (/home/amshukla17/rbp). So ideal 
 ```
 
 So that crontab entry will look like.
+
 Every Hour
 ```
 1 * * * * /usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py "/home/amshukla17/rbp/repositories.csv" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
@@ -70,7 +71,7 @@ Every Day
 1 0 * * * /usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py "/home/amshukla17/rbp/repositories.csv" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
 ```
 
-Check log in the file . It will look like following.
+Check log in the file /var/log/rbp-repo-backup.log. It will look like following.
 
 ![Backup Successful](images/successful-backup.png?raw=true "Backup Successful")
 
