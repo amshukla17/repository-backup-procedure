@@ -21,21 +21,30 @@ There is no loss with backing up git repositories. No one cannot be so sure that
 ---
 
 ## Procedure
-The procedure is pretty simple.
-- There is a repositories.csv file. You have to list your repositories now and maintain list onwards to take backup of those repositories.
+The procedure is pretty simple. You have two options to maintain your repository list.
+		1) Using csv file.
+		2) Using google spreadsheet. (Currently supported for sharing with url. You can make it readonly if no other purpose.)
+- There is a "repositories.csv file" OR "google spreadsheet" option. You have to list your repositories now and maintain list onwards to take backup of those repositories.
 - Make sure it is accessible from the server where this procedure is setup and runs well after setup.
 - Hook script with OS-Cron service and that's it. The script will start working to make it up-to date on-going. When first time script run it will clone the new repo and fetch it onwards if it's already available on desired location.
 
 ## Setup
 Follow mentioned steps to setup on your Ubuntu (Linux) server.
 
-### Clone this repo.
+### Clone this repo and switch to this branch.
 git clone https://github.com/amshukla17/repository-backup-procedure.git
+git branch repo-backup-list-g-sheet
+
 
 ### List repositories to Backup as bare
-Define your repository inside the repositories.csv file. This file is used to fetch the repositories.
+Define your repository inside the repositories.csv file OR in google spreadsheet's repositories sheet. This file is used to fetch the repositories.
 
 ![CSV File](images/csv-file.png?raw=true "CSV File")
+
+OR
+
+![Google Spreadsheet](images/g-sheet.png?raw=true "Google Spreadsheet")
+
 
 ### Setup in the cron-tab
 To run this script on specific interval to take backups regularly you can setup in cron of your OS. Most generic linux environment have following procedure.
@@ -53,22 +62,26 @@ To run this script on specific interval to take backups regularly you can setup 
 i.e. This procedure is setup in my home folder (/home/amshukla17/rbp). So ideal way to run this script is as following.
 
 ```
-[python3] [gitbackup.py] [CSV FILE] [BACKUP DESTINATION] >> [LOG FILE (optional)]
+[python3] [gitbackup.py] [csv/g-sheet] [CSV FILE PATH/Google Spreedsheet ID] [BACKUP DESTINATION] >> [LOG FILE (optional)]
 ```
 
 ```
-/usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py "/home/amshukla17/rbp/repositories.csv" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
+/usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py csv "/home/amshukla17/rbp/repositories.csv" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
+```
+
+```
+/usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py g-sheet "1AfNeg6RlvbM6SW4aN1lgVbHZUiaNCitSwFoEsBXqNtc" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
 ```
 
 So that crontab entry will look like.
 
-Every Hour
+Every Hour CSV
 ```
-1 * * * * /usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py "/home/amshukla17/rbp/repositories.csv" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
+1 * * * * /usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py csv "/home/amshukla17/rbp/repositories.csv" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
 ```
-Every Day
+Every Day Google Spreadsheet
 ```
-1 0 * * * /usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py "/home/amshukla17/rbp/repositories.csv" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
+1 0 * * * /usr/bin/python3 /home/amshukla17/rbp/src/gitbackup.py g-sheet "1AfNeg6RlvbM6SW4aN1lgVbHZUiaNCitSwFoEsBXqNtc" "/home/amshukla17/rbp/bare-repositories/" >> /var/log/rbp-repo-backup.log
 ```
 
 Check log in the file /var/log/rbp-repo-backup.log. It will look like following.
